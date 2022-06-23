@@ -70,9 +70,9 @@ def train():
 
                 print(f'Epoch: {epoch} | train loss: {loss.item()} | test accuracy: {accuracy}')
 
-                pbar.update(i, values=history.items(), finalize=False)
+                pbar.update(i, values=[x[:-1] for x in history.items()], finalize=False)
 
-            pbar.update(i, values=history.items(), finalize=True)
+            pbar.update(i, values=[x[:-1] for x in history.items()], finalize=True)
 
 if __name__ == '__main__':
     train()
