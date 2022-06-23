@@ -20,7 +20,7 @@ def next_(train_iter, train_loader):
     return tensor(inp), tensor(label), train_iter
 
 
-def build():
+def train():
     net = Model().cuda()
 
     # metric_fc = ArcMarginModel()
