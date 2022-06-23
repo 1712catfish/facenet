@@ -14,10 +14,10 @@ class Model(nn.Module):
         self.backbone = models.mobilenet_v2(pretrained=False, dropout=0.2)
         self.head = nn.Sequential(
             nn.Linear(self.backbone.classifier[1].out_features, 512),
-            nn.ReLU(inplace=True),
+            nn.ReLU(inplace=False),
             nn.Linear(512, 256),
-            nn.ReLU(inplace=True),
-            nn.Linear(512, 128),
+            nn.ReLU(inplace=False),
+            nn.Linear(256, 128),
         )
 
     def forward(self, inp):
