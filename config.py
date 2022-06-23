@@ -10,8 +10,8 @@ LOG_EVERY = 200
 BATCH_SIZE = 32
 LR = 0.0003
 
-TRAIN_DIR = 'train_lfw/merge'
-VAL_DIR = 'train_lfw/merge'
+TRAIN_DIR = '/content/train_lfw/merge'
+VAL_DIR = '/content/train_lfw/merge'
 
 NUM_CLASSES = len(os.listdir(TRAIN_DIR))
 
