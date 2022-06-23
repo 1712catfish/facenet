@@ -67,9 +67,9 @@ def train():
                 history['loss'].append(loss.item())
                 history['accuracy'].append(accuracy)
 
-                print(f'step:', i, end='  ')
-                print('loss:', loss.item(), end='  ')
-                print('accuracy:', accuracy)
+                print('step:', '{:5d}'.format(i), end='  ')
+                print('loss:', '%.6f' % (loss.item()), end='  ')
+                print('accuracy:', '%.6f' % accuracy)
                 # print('prediction 1:', prediction1[:5])
                 # print('label 1:', label1[:5])
                 # print('prediction 2:', prediction2[:5])
