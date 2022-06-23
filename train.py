@@ -37,7 +37,7 @@ def train():
 
         for i in range(config.STEPS_PER_EPOCH):
 
-            print(len(next(train_iter)[0]))
+            print(next(train_iter))
             ((input1, label1), (input2, label2)), train_iter = infinite_next(train_iter, train_loader)
 
             input1, label1, input2, label2 = (_.to(config.DEVICE) for _ in (input1, label1, input2, label2))
