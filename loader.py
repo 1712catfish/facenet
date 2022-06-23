@@ -17,24 +17,25 @@ class PairDataset(torchvision.datasets.ImageFolder):
 
         print(type(self.imgs))
 
-        for i1, (_, label1) in enumerate(self.imgs):
-            for i2, (_, label2) in enumerate(self.imgs):
-                if label1 == label2:
-                    self.co_pairs.append((i1, i2))
+        for i, (_, label_i) in enumerate(self.imgs):
+            for j, (_, label_j) in enumerate(self.imgs):
+                if label_i == label_j:
+                    self.co_pairs.append((i, j))
                 else:
-                    self.contra_pairs.append((i1, i2))
+                    self.contra_pairs.append((i, j))
 
     def __iter__(self):
+
         def iterator():
             co_iter = iter(self.co_pairs)
             contra_iter = iter(self.contra_pairs)
 
             if toss(self.pair_rate):
-                co, co_iter = infinite_next(co_iter, self.co_pairs)
-                yield co
+                (i, j), co_iter = infinite_next(co_iter, self.co_pairs)
+            else:
+                (i, j), contra_iter = infinite_next(contra_iter, self.contra_pairs)
 
-            contra, contra_iter = infinite_next(contra_iter, self.contra_pairs)
-            yield contra
+            yield super()[i], super()[j]
 
         return iterator()
 
