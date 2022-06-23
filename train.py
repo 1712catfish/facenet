@@ -10,6 +10,7 @@ from model import Model
 
 
 def train():
+    print('building net...')
     net = Model().cuda()
 
     # metric_fc = ArcMarginModel()
@@ -19,6 +20,7 @@ def train():
     optimizer = torch.optim.Adam(net.parameters(), lr=config.LR)
     criterion = CleanContrastiveLoss().cuda()
 
+    print('building loader...')
     train_loader, val_loader = build_loader()
 
     history = dict(
