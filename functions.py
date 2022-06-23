@@ -20,7 +20,7 @@ tensorLift = lift(lambda x: torch.autograd.Variable(x))
 cudaLift = lift(lambda x: x.cuda())
 cudaTensorLift = lift(lambda x: torch.autograd.Variable(x).cuda())
 
-tensor = lambda x: torch.autograd.Variable(x).cuda()
+cuda = lambda x: torch.autograd.Variable(x).cuda()
 
 cpu = lambda x: x.cpu().detach().numpy()
 
