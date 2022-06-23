@@ -33,7 +33,7 @@ def train():
         train_iter = iter(train_loader)
         val_iter = iter(val_loader)
 
-        for i in tqdm(range(config.STEPS_PER_EPOCH)):
+        for i in range(config.STEPS_PER_EPOCH):
 
             input1, label1, train_iter = next_(train_iter, train_loader)
             input2, label2, train_iter = next_(train_iter, train_loader)
@@ -53,9 +53,6 @@ def train():
                 prediction1 = torch.argmax(net(input1), dim=1)
                 prediction2 = torch.argmax(net(input2), dim=1)
 
-                print(prediction1)
-                print(prediction2)
-
                 accuracy = accuracy_score(
                     cpu(torch.eq(prediction1, prediction2)),
                     cpu(torch.eq(label1, label2))
@@ -66,6 +63,8 @@ def train():
 
                 print(f'Epoch: {epoch} | train loss: {loss.item()} | test accuracy: {accuracy}')
 
+                print(prediction1)
+                print(prediction2)
 
 
 if __name__ == '__main__':
