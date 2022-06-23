@@ -1,14 +1,11 @@
 import torch
-from torch import nn
-
 from sklearn.metrics import accuracy_score
 
+import config
+from build import next_
 from loader import build_loader
 from loss import CleanContrastiveLoss
-from model import Model, ArcMarginModel
-from functions import tensor
-from build import next_
-import config
+from model import Model
 
 
 def train():
@@ -54,8 +51,8 @@ def train():
                 prediction2 = torch.argmax(net(input2), dim=1)
 
                 accuracy = accuracy_score(
-                    torch.eq(prediction1, prediction2).data,
-                    torch.eq(label1, label2).data
+                    torch.eq(prediction1, prediction2).item(),
+                    torch.eq(label1, label2).item()
                 )
 
                 history['loss'].append(loss.item())
