@@ -32,12 +32,7 @@ def train():
         train_iter = iter(train_loader)
         val_iter = iter(val_loader)
 
-        pbar = tf.keras.utils.Progbar(
-            target=config.EPOCHS,
-            stateful_metrics=[]
-        )
-
-        for i in range(config.STEPS_PER_EPOCH):
+        for i in tqdm(range(config.STEPS_PER_EPOCH)):
 
             input1, label1, train_iter = next_(train_iter, train_loader)
             input2, label2, train_iter = next_(train_iter, train_loader)
@@ -70,9 +65,7 @@ def train():
 
                 print(f'Epoch: {epoch} | train loss: {loss.item()} | test accuracy: {accuracy}')
 
-                pbar.update(i, values=[x[:-1] for x in history.items()], finalize=False)
 
-            pbar.update(i, values=[x[:-1] for x in history.items()], finalize=True)
 
 if __name__ == '__main__':
     train()
