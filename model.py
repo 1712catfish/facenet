@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 import torchvision.models as models
 import torch.nn.functional as F
+import config
 
 from functions import tensor
 

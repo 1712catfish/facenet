@@ -8,6 +8,7 @@ from loss import CleanContrastiveLoss
 from model import Model, ArcMarginModel
 from functions import tensor
 from build import next_
+import config
 
 
 def train():

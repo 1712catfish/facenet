@@ -1,6 +1,7 @@
 import torchvision
 import torch.utils.data as data
 import torchvision.transforms as T
+import config
 
 
 def build_loader():
