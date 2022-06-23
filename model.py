@@ -18,10 +18,10 @@ class Model(nn.Module):
             nn.Linear(4096, config.EMB_SIZE),
         )
 
-    def forward(self, inp, label):
+    def forward(self, inp):
         x = self.backbone(inp)
         x = self.head(x)
-        return x, label
+        return x
 
 
 class ArcMarginModel(nn.Module):
