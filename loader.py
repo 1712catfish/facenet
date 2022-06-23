@@ -1,10 +1,8 @@
 import random
 
-import albumentations as A
 import torch.utils.data as data
 import torchvision
-import torchvision.transforms as T
-from albumentations.pytorch import ToTensorV2
+from cv2 import cv2
 
 import config
 from build import infinite_next
@@ -58,59 +56,36 @@ class PairDataset(torchvision.datasets.ImageFolder):
                 self.cls.append(i)
                 prev_label = label
 
+    def load_and_preprocess(self, idx):
+        filename, target = self.imgs[idx]
+        image = cv2.imread(filename)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        if self.transform is not None:
+            image = self.transform(image=image)["image"]
+        if self.target_transform is not None:
+            target = self.target_transform(target)
+        return image, target
+
     def __getitem__(self, _):
 
         if toss(self.pair_rate):
             k = random.randint(0, len(self.cls) - 2)
             i, j = random.sample(range(self.cls[k], self.cls[k + 1]), 2)
-            return super().__getitem__(i), super().__getitem__(j)
+            return self.load_and_preprocess(i), self.load_and_preprocess(j)
 
         k1, k2 = random.sample(range(len(self.cls) - 2), 2)
         i = random.randint(self.cls[k1], self.cls[k1 + 1])
         j = random.randint(self.cls[k2], self.cls[k2 + 1])
-        return super().__getitem__(i), super().__getitem__(j)
+        return self.load_and_preprocess(i), self.load_and_preprocess(j)
 
 
-def build_loader():
-    # train_transform = T.Compose([
-    #     T.CenterCrop(config.IMSIZE),
-    #     T.ToTensor(),
-    #     T.Normalize(mean=[0.485, 0.456, 0.406],
-    #                 std=[0.229, 0.224, 0.225])
-    # ])
-
-    # val_transform = T.Compose([
-    #     T.CenterCrop(config.IMSIZE),
-    #     T.ToTensor(),
-    #     T.Normalize(mean=[0.485, 0.456, 0.406],
-    #                 std=[0.229, 0.224, 0.225])
-    # ])
-
-    train_transform = A.Compose([
-        A.SmallestMaxSize(max_size=160),
-        A.ShiftScaleRotate(shift_limit=0.05, scale_limit=0.05, rotate_limit=15, p=0.5),
-        A.RandomCrop(height=128, width=128),
-        A.RGBShift(r_shift_limit=15, g_shift_limit=15, b_shift_limit=15, p=0.5),
-        A.RandomBrightnessContrast(p=0.5),
-        A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-        ToTensorV2(),
-    ])
-
-    val_transform = A.Compose([
-        A.SmallestMaxSize(max_size=160),
-        A.CenterCrop(height=128, width=128),
-        A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-        ToTensorV2(),
-    ])
-
-    target_transform = T.Compose([])
-
+def build_loader(transform):
     train_ds = PairDataset(root=config.TRAIN_DIR,
-                           transform=train_transform,
-                           target_transform=target_transform)
+                           transform=transform['train'],
+                           target_transform=transform.get('train-target', None))
     val_ds = PairDataset(root=config.VAL_DIR,
-                         transform=val_transform,
-                         target_transform=target_transform)
+                         transform=transform['val'],
+                         target_transform=transform.get('val-target', None))
 
     train_loader = data.DataLoader(train_ds,
                                    batch_size=config.BATCH_SIZE,

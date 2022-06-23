@@ -1,0 +1,2 @@
+https://albumentations.ai/docs/examples/pytorch_classification/
+https://colab.research.google.com/drive/109vu3F1LTzD1gdVV6cho9fKGx7lzbFll#scrollTo=aFtwoTIS0woY

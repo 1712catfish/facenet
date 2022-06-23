@@ -7,6 +7,7 @@ from loader import build_loader, take
 from loss import CleanContrastiveLoss
 from model import Model
 from plot import plot_history
+from preprocessing import build_transform
 
 
 def train():
@@ -21,7 +22,8 @@ def train():
     criterion = CleanContrastiveLoss().to(config.DEVICE)
 
     print('building loaders...')
-    train_loader, val_loader = build_loader()
+    transform = build_transform()
+    train_loader, val_loader = build_loader(transform)
 
     history = dict(
         loss=[],
@@ -65,8 +67,8 @@ def train():
                 history['loss'].append(loss.item())
                 history['accuracy'].append(accuracy)
 
-                print(f'step:', i)
-                print('loss:', loss.item(), end='   ')
+                print(f'step:', i, end='  ')
+                print('loss:', loss.item(), end='  ')
                 print('accuracy:', accuracy)
                 # print('prediction 1:', prediction1[:5])
                 # print('label 1:', label1[:5])
