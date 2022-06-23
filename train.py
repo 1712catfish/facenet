@@ -3,7 +3,7 @@ from sklearn.metrics import accuracy_score
 
 import config
 from build import infinite_next
-from functions import cuda, cpu
+from functions import cpu
 from loader import build_loader
 from loss import CleanContrastiveLoss
 from model import Model
@@ -37,11 +37,12 @@ def train():
 
         for i in range(config.STEPS_PER_EPOCH):
 
-            (input1, label1), train_iter = infinite_next(train_iter, train_loader)
-            (input2, label2), train_iter = infinite_next(train_iter, train_loader)
+            ((input1, label1), (input2, label2)), train_iter = infinite_next(train_iter, train_loader)
 
-            output1 = net(cuda(input1))
-            output2 = net(cuda(input2))
+            input1, label1, input2, label2 = (_.to(config.DEVICE) for _ in (input1, label1, input2, label2))
+
+            output1 = net(input1)
+            output2 = net(input2)
 
             loss = criterion(output1, output2, torch.eq(label1, label2))
 
