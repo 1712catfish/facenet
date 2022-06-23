@@ -67,7 +67,6 @@ class PairDataset(torchvision.datasets.ImageFolder):
         return image, target
 
     def __getitem__(self, _):
-
         if toss(self.pair_rate):
             k = random.randint(0, len(self.cls) - 2)
             i, j = random.sample(range(self.cls[k], self.cls[k + 1]), 2)

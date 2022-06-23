@@ -74,7 +74,6 @@ def train():
                 # print('label 1:', label1[:5])
                 # print('prediction 2:', prediction2[:5])
                 # print('label 2:', label2[:5])
-                print()
 
     plot_history(history)
 
