@@ -15,9 +15,17 @@ class Model(nn.Module):
         self.head = nn.Sequential(
             nn.Linear(self.backbone.classifier[1].out_features, 512),
             nn.ReLU(inplace=False),
+            nn.BatchNorm1d(512),
+
             nn.Linear(512, 256),
             nn.ReLU(inplace=False),
+            nn.BatchNorm1d(128),
+
             nn.Linear(256, 128),
+            nn.ReLU(inplace=False),
+            nn.BatchNorm1d(128),
+
+            nn.Hardsigmoid(inplace=False)
         )
 
     def forward(self, inp):
