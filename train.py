@@ -20,7 +20,6 @@ def train():
     optimizer = torch.optim.Adam(net.parameters(), lr=config.LR)
     criterion = CleanContrastiveLoss().cuda()
 
-    print('building loader...')
     train_loader, val_loader = build_loader()
 
     history = dict(
@@ -30,7 +29,7 @@ def train():
 
     for epoch in range(config.EPOCHS):
 
-        print('Epoch ', epoch)
+        print('epoch ', epoch)
 
         train_iter = iter(train_loader)
         val_iter = iter(val_loader)
@@ -63,13 +62,13 @@ def train():
                 history['loss'].append(loss.item())
                 history['accuracy'].append(accuracy)
 
-                print(f'Step: ', i)
-                print('Loss: ', loss.item())
-                print('Accuracy: ', accuracy)
-                print('Prediction 1: ', cpu(prediction1[:5]))
-                print('Label 1: ', cpu(label1[:5]))
-                print('Prediction 2: ', cpu(prediction2[:5]))
-                print('Label 2: ', cpu(label2[:5]))
+                print(f'step: ', i)
+                print('loss: ', loss.item())
+                print('accuracy: ', accuracy)
+                print('prediction 1: ', cpu(prediction1[:5]))
+                print('label 1: ', cpu(label1[:5]))
+                print('prediction 2: ', cpu(prediction2[:5]))
+                print('label 2: ', cpu(label2[:5]))
                 print()
 
 

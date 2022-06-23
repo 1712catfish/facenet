@@ -15,14 +15,14 @@ class PairDataset(torchvision.datasets.ImageFolder):
         self.contra_pairs = []
         self.pair_rate = pair_rate
 
-        print(type(self.imgs))
-
         for i, (_, label_i) in enumerate(self.imgs):
             for j, (_, label_j) in enumerate(self.imgs):
                 if label_i == label_j:
                     self.co_pairs.append((i, j))
                 else:
                     self.contra_pairs.append((i, j))
+
+        print('finish generating pairs...')
 
     def __iter__(self):
 
@@ -52,6 +52,7 @@ def build_loader():
         # T.ToTensor(),
     ])
 
+    print('building dataset...')
     train_ds = PairDataset(root=config.TRAIN_DIR,
                            transform=transform,
                            target_transform=target_transform)
@@ -59,6 +60,7 @@ def build_loader():
                          transform=transform,
                          target_transform=target_transform)
 
+    print('building loader...')
     train_loader = data.DataLoader(train_ds,
                                    batch_size=config.BATCH_SIZE,
                                    shuffle=True, num_workers=2,
