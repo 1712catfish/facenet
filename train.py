@@ -29,7 +29,8 @@ def train():
 
     for epoch in range(config.EPOCHS):
 
-        print('epoch ', epoch)
+        print()
+        print('epoch', epoch)
 
         train_iter = iter(train_loader)
         val_iter = iter(val_loader)
@@ -38,6 +39,8 @@ def train():
 
             (input1, label1), train_iter = infinite_next(train_iter, train_loader)
             (input2, label2), train_iter = infinite_next(train_iter, train_loader)
+
+            print(input1)
 
             loss = criterion(net(input1), net(input2), torch.eq(label1, label2))
 
@@ -62,13 +65,13 @@ def train():
                 history['loss'].append(loss.item())
                 history['accuracy'].append(accuracy)
 
-                print(f'step: ', i)
-                print('loss: ', loss.item())
-                print('accuracy: ', accuracy)
-                print('prediction 1: ', cpu(prediction1[:5]))
-                print('label 1: ', cpu(label1[:5]))
-                print('prediction 2: ', cpu(prediction2[:5]))
-                print('label 2: ', cpu(label2[:5]))
+                print(f'step:', i)
+                print('loss:', loss.item())
+                print('accuracy:', accuracy)
+                print('prediction 1:', cpu(prediction1[:5]))
+                print('label 1:', cpu(label1[:5]))
+                print('prediction 2:', cpu(prediction2[:5]))
+                print('label 2:', cpu(label2[:5]))
                 print()
 
 
