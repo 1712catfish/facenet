@@ -33,7 +33,7 @@ def train():
         train_iter = iter(train_loader)
         val_iter = iter(val_loader)
 
-        for i in range(config.ITERATION_PER_EPOCH):
+        for i in range(config.STEPS_PER_EPOCH):
 
             input1, label1, train_iter = next_(train_iter, train_loader)
             input2, label2, train_iter = next_(train_iter, train_loader)
@@ -59,9 +59,9 @@ def train():
                 )
 
                 history['loss'].append(loss.item())
-                history['accuracy'].append(accuracy.item())
+                history['accuracy'].append(accuracy)
 
-                print(f'Epoch: {epoch} | train loss: {loss.item():.4f} | test accuracy: {accuracy.item():.2f}')
+                print(f'Epoch: {epoch} | train loss: {loss.item():.4f} | test accuracy: {accuracy:.2f}')
 
 
 if __name__ == '__main__':
