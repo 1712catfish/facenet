@@ -16,8 +16,8 @@ class PairDataset(torchvision.datasets.ImageFolder):
         self.pair_rate = pair_rate
 
         for i, (_, label_i) in enumerate(self.imgs):
+            print(i)
             for j, (_, label_j) in enumerate(self.imgs):
-                print(i, j)
                 if label_i == label_j:
                     self.co_pairs.append((i, j))
                 else:
