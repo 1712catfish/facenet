@@ -3,7 +3,6 @@ from torch import nn
 
 from sklearn.metrics import accuracy_score
 
-import config
 from loader import build_loader
 from loss import CleanContrastiveLoss
 from model import Model, ArcMarginModel
