@@ -1,11 +1,11 @@
 import math
+
 import torch
 import torch.nn as nn
-import torchvision.models as models
 import torch.nn.functional as F
-import config
+import torchvision.models as models
 
-from functions import tensor
+import config
 
 
 class Model(nn.Module):
@@ -13,9 +13,11 @@ class Model(nn.Module):
         super().__init__()
         self.backbone = models.mobilenet_v2(pretrained=False, dropout=0.2)
         self.head = nn.Sequential(
-            nn.Linear(self.backbone.classifier[1].out_features, 4096),
+            nn.Linear(self.backbone.classifier[1].out_features, 512),
             nn.ReLU(inplace=True),
-            nn.Linear(4096, config.EMB_SIZE),
+            nn.Linear(512, 256),
+            nn.ReLU(inplace=True),
+            nn.Linear(512, 128),
         )
 
     def forward(self, inp):
