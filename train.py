@@ -38,7 +38,7 @@ def train():
             input1, label1, train_iter = next_(train_iter, train_loader)
             input2, label2, train_iter = next_(train_iter, train_loader)
 
-            loss = criterion(net(input1), net(input2), label1, label2)
+            loss = criterion(net(input1), net(input2), torch.eq(label1, label2))
 
             optimizer.zero_grad()
 
@@ -54,8 +54,8 @@ def train():
                 prediction2 = torch.argmax(net(input2), dim=1)
 
                 accuracy = accuracy_score(
-                    (net(input1) == net(input2).data),
-                    (label1 == label2).data
+                    torch.eq(prediction1, prediction2).data,
+                    torch.eq(label1, label2).data
                 )
 
                 history['loss'].append(loss.item())
