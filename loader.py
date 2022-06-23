@@ -56,20 +56,17 @@ class PairDataset(torchvision.datasets.ImageFolder):
                 self.cls.append(i)
                 prev_label = label
 
-    def __iter__(self):
+    def __getitem__(self, item):
 
-        def iterator():
-            if toss(self.pair_rate):
-                k = random.randint(0, len(self.cls) - 2)
-                i, j = random.sample(range(self.cls[k], self.cls[k + 1]), 2)
-                yield self[i], self[j]
+        if toss(self.pair_rate):
+            k = random.randint(0, len(self.cls) - 2)
+            i, j = random.sample(range(self.cls[k], self.cls[k + 1]), 2)
+            return self[i], self[j]
 
-            k1, k2 = random.sample(range(len(self.cls) - 2), 2)
-            i = random.randint(self.cls[k1], self.cls[k1 + 1])
-            j = random.randint(self.cls[k2], self.cls[k2 + 1])
-            yield self[i], self[j]
-
-        return iterator()
+        k1, k2 = random.sample(range(len(self.cls) - 2), 2)
+        i = random.randint(self.cls[k1], self.cls[k1 + 1])
+        j = random.randint(self.cls[k2], self.cls[k2 + 1])
+        return self[i], self[j]
 
 
 def build_loader():
