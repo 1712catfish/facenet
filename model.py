@@ -19,7 +19,7 @@ class Model(nn.Module):
 
             nn.Linear(512, 256),
             nn.ReLU(inplace=False),
-            nn.BatchNorm1d(128),
+            nn.BatchNorm1d(256),
 
             nn.Linear(256, 128),
             nn.ReLU(inplace=False),

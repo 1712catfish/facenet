@@ -1,7 +1,5 @@
-import tensorflow as tf
 import torch
 from sklearn.metrics import accuracy_score
-from tqdm import tqdm
 
 import config
 from build import next_
@@ -63,8 +61,8 @@ def train():
 
                 print(f'Epoch: {epoch} | train loss: {loss.item()} | test accuracy: {accuracy}')
 
-                print(prediction1)
-                print(prediction2)
+                print(prediction1[:5])
+                print(prediction2[:5])
 
 
 if __name__ == '__main__':
