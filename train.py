@@ -66,12 +66,12 @@ def train():
                 history['accuracy'].append(accuracy)
 
                 print(f'step:', i)
-                print('loss:', loss.item())
+                print('loss:', loss.item(), end='   ')
                 print('accuracy:', accuracy)
-                print('prediction 1:', prediction1[:5])
-                print('label 1:', label1[:5])
-                print('prediction 2:', prediction2[:5])
-                print('label 2:', label2[:5])
+                # print('prediction 1:', prediction1[:5])
+                # print('label 1:', label1[:5])
+                # print('prediction 2:', prediction2[:5])
+                # print('label 2:', label2[:5])
                 print()
 
     plot_history(history)
