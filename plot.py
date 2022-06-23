@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 
+import config
+
 
 def show_plot(iteration, loss):
     plt.plot(iteration, loss)
@@ -13,13 +15,11 @@ def plot_history(history):
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.show(block=True)
+    plt.savefig(config.SAVE_PLOT + '/accuracy.jpg')
 
     plt.plot(history['loss'])
     plt.title('model loss')
     plt.ylabel('loss')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.show(block=True)
-
-# show_plot(counter, loss_history)
+    plt.savefig(config.SAVE_PLOT + '/loss.jpg')
