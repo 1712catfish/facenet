@@ -7,7 +7,7 @@ def show_plot(iteration, loss):
     plt.show()
 
 def plot_history(history):
-    plt.plot(history.history['accuracy'])
+    plt.plot(history['accuracy'])
     plt.title('model accuracy')
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
