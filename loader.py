@@ -13,7 +13,7 @@ def build_loader():
     ])
 
     target_transform = T.Compose([
-        T.ToTensor(),
+        # T.ToTensor(),
     ])
 
     train_ds = torchvision.datasets.ImageFolder(root=config.TRAIN_DIR,
