@@ -103,6 +103,6 @@ def build_loader():
     return train_loader, val_loader
 
 
-def take(iterator, loader):
-    ((input1, label1), (input2, label2)), iterator = infinite_next(iterator, loader)
-    return (_.to(config.DEVICE) for _ in (input1, label1, input2, label2)), iterator
+def take(iterator):
+    ((input1, label1), (input2, label2)) = next(iterator)
+    return (_.to(config.DEVICE) for _ in (input1, label1, input2, label2))

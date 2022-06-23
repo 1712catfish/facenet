@@ -10,14 +10,14 @@ from model import Model
 
 def train():
     print('building net...')
-    net = Model().cuda()
+    net = Model().to(config.DEVICE)
 
     # metric_fc = ArcMarginModel()
     # metric_fc = nn.DataParallel(metric_fc)
     # metric_fc = metric_fc.cuda()
 
     optimizer = torch.optim.Adam(net.parameters(), lr=config.LR)
-    criterion = CleanContrastiveLoss().cuda()
+    criterion = CleanContrastiveLoss().to(config.DEVICE)
 
     train_loader, val_loader = build_loader()
 
@@ -35,10 +35,7 @@ def train():
         val_iter = iter(val_loader)
 
         for i in range(config.STEPS_PER_EPOCH):
-
-            print(next(train_iter))
-
-            (input1, label1, input2, label2), train_iter = take(train_iter, train_loader)
+            input1, label1, input2, label2 = take(train_iter)
 
             output1 = net(input1)
             output2 = net(input2)
@@ -52,7 +49,7 @@ def train():
             optimizer.step()
 
             if i % 10 == 0:
-                (input1, label1, input2, label2), val_iter = take(val_iter, val_loader)
+                input1, label1, input2, label2 = take(val_iter)
 
                 prediction1 = torch.argmax(net(input1), dim=1)
                 prediction2 = torch.argmax(net(input2), dim=1)
