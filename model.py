@@ -11,7 +11,7 @@ import config
 class Model(nn.Module):
     def __init__(self):
         super().__init__()
-        self.backbone = models.mobilenet_v2(pretrained=False, dropout=0.2)
+        self.backbone = models.mobilenet_v2(pretrained=True, dropout=0.2)
         self.head = nn.Sequential(
             nn.Linear(self.backbone.classifier[1].out_features, 512),
             nn.ReLU(inplace=False),
