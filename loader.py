@@ -1,3 +1,5 @@
+import random
+
 import torch.utils.data as data
 import torchvision
 import torchvision.transforms as T
@@ -8,6 +10,36 @@ from functions import toss
 
 
 class PairDataset(torchvision.datasets.ImageFolder):
+    def __init__(self, *args, pair_rate=0.5, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.pair_rate = pair_rate
+        self.cls = []
+
+        prev_label = None
+        for i, (_, label) in enumerate(self.imgs):
+            if label != prev_label:
+                self.cls.append(i)
+                prev_label = label
+
+    def __iter__(self):
+
+        def iterator():
+
+            if toss(self.pair_rate):
+                k = random.randint(0, len(self.cls) - 2)
+                i, j = random.sample(range(self.cls[k], self.cls[k + 1]), 2)
+            else:
+                k1, k2 = random.sample(range(len(self.cls) - 2), 2)
+                i = random.randint(self.cls[k1], self.cls[k1 + 1])
+                j = random.randint(self.cls[k2], self.cls[k2 + 1])
+
+            yield super()[i], super()[j]
+
+        return iterator()
+
+
+class NaivePairDataset(torchvision.datasets.ImageFolder):
     def __init__(self, *args, pair_rate=0.5, **kwargs):
         super().__init__(*args, **kwargs)
 
