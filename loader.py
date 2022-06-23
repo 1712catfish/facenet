@@ -1,6 +1,7 @@
-import torchvision
 import torch.utils.data as data
+import torchvision
 import torchvision.transforms as T
+
 import config
 
 
@@ -23,7 +24,13 @@ def build_loader():
                                               transform=transform,
                                               target_transform=target_transform)
 
-    train_loader = data.DataLoader(train_ds, batch_size=config.BATCH_SIZE, shuffle=True, num_workers=2)
-    val_loader = data.DataLoader(val_ds, batch_size=config.BATCH_SIZE, shuffle=True, num_workers=2)
+    train_loader = data.DataLoader(train_ds,
+                                   batch_size=config.BATCH_SIZE,
+                                   shuffle=True, num_workers=2,
+                                   drop_last=True)
+    val_loader = data.DataLoader(val_ds,
+                                 batch_size=config.BATCH_SIZE,
+                                 shuffle=True, num_workers=2,
+                                 drop_last=True)
 
     return train_loader, val_loader
