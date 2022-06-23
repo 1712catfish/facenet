@@ -1,10 +1,11 @@
 import os
+
 import torch
 
 IMSIZE = 224
 EMB_SIZE = 2048
 
-EPOCHS = 10
+EPOCHS = 1
 STEPS_PER_EPOCH = 1000
 LOG_EVERY = 200
 BATCH_SIZE = 32

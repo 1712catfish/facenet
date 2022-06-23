@@ -28,6 +28,8 @@ def train():
 
     for epoch in range(config.EPOCHS):
 
+        print('Epoch ', epoch)
+
         train_iter = iter(train_loader)
         val_iter = iter(val_loader)
 
@@ -59,7 +61,7 @@ def train():
                 history['loss'].append(loss.item())
                 history['accuracy'].append(accuracy)
 
-                print(f'Epoch: {epoch} | train loss: {loss.item()} | test accuracy: {accuracy}')
+                print(f'Step: {i} --- loss: {loss.item()} --- accuracy: {accuracy}')
 
                 print(prediction1[:5])
                 print(prediction2[:5])
