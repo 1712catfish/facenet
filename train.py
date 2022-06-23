@@ -51,8 +51,8 @@ def train():
                 prediction2 = torch.argmax(net(input2), dim=1)
 
                 accuracy = accuracy_score(
-                    torch.eq(prediction1, prediction2).item(),
-                    torch.eq(label1, label2).item()
+                    torch.eq(prediction1, prediction2).cpu().detach().numpy(),
+                    torch.eq(label1, label2).cpu().detach().numpy()
                 )
 
                 history['loss'].append(loss.item())
