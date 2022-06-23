@@ -61,12 +61,12 @@ class PairDataset(torchvision.datasets.ImageFolder):
         if toss(self.pair_rate):
             k = random.randint(0, len(self.cls) - 2)
             i, j = random.sample(range(self.cls[k], self.cls[k + 1]), 2)
-            return self[i], self[j]
+            return super()[i], super()[j]
 
         k1, k2 = random.sample(range(len(self.cls) - 2), 2)
         i = random.randint(self.cls[k1], self.cls[k1 + 1])
         j = random.randint(self.cls[k2], self.cls[k2 + 1])
-        return self[i], self[j]
+        return super()[i], super()[j]
 
 
 def build_loader():
