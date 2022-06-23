@@ -1,8 +1,10 @@
 import random
 
+import albumentations as A
 import torch.utils.data as data
 import torchvision
 import torchvision.transforms as T
+from albumentations.pytorch import ToTensorV2
 
 import config
 from build import infinite_next
@@ -70,26 +72,46 @@ class PairDataset(torchvision.datasets.ImageFolder):
 
 
 def build_loader():
-    transform = T.Compose([
-        T.CenterCrop(config.IMSIZE),
-        T.ToTensor(),
-        T.Normalize(mean=[0.485, 0.456, 0.406],
-                    std=[0.229, 0.224, 0.225])
+    # train_transform = T.Compose([
+    #     T.CenterCrop(config.IMSIZE),
+    #     T.ToTensor(),
+    #     T.Normalize(mean=[0.485, 0.456, 0.406],
+    #                 std=[0.229, 0.224, 0.225])
+    # ])
+
+    # val_transform = T.Compose([
+    #     T.CenterCrop(config.IMSIZE),
+    #     T.ToTensor(),
+    #     T.Normalize(mean=[0.485, 0.456, 0.406],
+    #                 std=[0.229, 0.224, 0.225])
+    # ])
+
+    train_transform = A.Compose([
+        A.SmallestMaxSize(max_size=160),
+        A.ShiftScaleRotate(shift_limit=0.05, scale_limit=0.05, rotate_limit=15, p=0.5),
+        A.RandomCrop(height=128, width=128),
+        A.RGBShift(r_shift_limit=15, g_shift_limit=15, b_shift_limit=15, p=0.5),
+        A.RandomBrightnessContrast(p=0.5),
+        A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+        ToTensorV2(),
     ])
 
-    target_transform = T.Compose([
-        # T.ToTensor(),
+    val_transform = A.Compose([
+        A.SmallestMaxSize(max_size=160),
+        A.CenterCrop(height=128, width=128),
+        A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+        ToTensorV2(),
     ])
 
-    print('building dataset...')
+    target_transform = T.Compose([])
+
     train_ds = PairDataset(root=config.TRAIN_DIR,
-                           transform=transform,
+                           transform=train_transform,
                            target_transform=target_transform)
     val_ds = PairDataset(root=config.VAL_DIR,
-                         transform=transform,
+                         transform=val_transform,
                          target_transform=target_transform)
 
-    print('building loader...')
     train_loader = data.DataLoader(train_ds,
                                    batch_size=config.BATCH_SIZE,
                                    shuffle=True, num_workers=2,

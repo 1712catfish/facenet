@@ -6,6 +6,7 @@ from functions import cpu
 from loader import build_loader, take
 from loss import CleanContrastiveLoss
 from model import Model
+from plot import plot_history
 
 
 def train():
@@ -19,6 +20,7 @@ def train():
     optimizer = torch.optim.Adam(net.parameters(), lr=config.LR)
     criterion = CleanContrastiveLoss().to(config.DEVICE)
 
+    print('building loaders...')
     train_loader, val_loader = build_loader()
 
     history = dict(
@@ -26,13 +28,14 @@ def train():
         accuracy=[]
     )
 
+    train_iter = iter(train_loader)
+    val_iter = iter(val_loader)
+
+    print('training...')
+
     for epoch in range(config.EPOCHS):
 
-        print()
         print('epoch', epoch)
-
-        train_iter = iter(train_loader)
-        val_iter = iter(val_loader)
 
         for i in range(config.STEPS_PER_EPOCH):
             input1, label1, input2, label2 = take(train_iter)
@@ -70,6 +73,8 @@ def train():
                 print('prediction 2:', prediction2[:5])
                 print('label 2:', label2[:5])
                 print()
+
+    plot_history(history)
 
 
 if __name__ == '__main__':
