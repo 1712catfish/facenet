@@ -9,5 +9,5 @@ class CleanContrastiveLoss(nn.Module):
         y_hat = F.pairwise_distance(output1, output2, keepdim=True)
         return torch.mean(
             y * torch.pow(y_hat, 2) +
-            (1 - y) * torch.pow(F.relu(1 - y_hat), 2)
+            ~y * torch.pow(F.relu(1 - y_hat), 2)
         )
