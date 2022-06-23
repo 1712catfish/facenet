@@ -2,9 +2,8 @@ import torch
 from sklearn.metrics import accuracy_score
 
 import config
-from build import infinite_next
 from functions import cpu
-from loader import build_loader
+from loader import build_loader, take
 from loss import CleanContrastiveLoss
 from model import Model
 
@@ -38,9 +37,8 @@ def train():
         for i in range(config.STEPS_PER_EPOCH):
 
             print(next(train_iter))
-            ((input1, label1), (input2, label2)), train_iter = infinite_next(train_iter, train_loader)
 
-            input1, label1, input2, label2 = (_.to(config.DEVICE) for _ in (input1, label1, input2, label2))
+            (input1, label1, input2, label2), train_iter = take(train_iter, train_loader)
 
             output1 = net(input1)
             output2 = net(input2)
@@ -54,8 +52,7 @@ def train():
             optimizer.step()
 
             if i % 10 == 0:
-                (input1, label1), train_iter = infinite_next(val_iter, val_loader)
-                (input2, label2), train_iter = infinite_next(val_iter, val_loader)
+                (input1, label1, input2, label2), val_iter = take(val_iter, val_loader)
 
                 prediction1 = torch.argmax(net(input1), dim=1)
                 prediction2 = torch.argmax(net(input2), dim=1)
@@ -71,10 +68,10 @@ def train():
                 print(f'step:', i)
                 print('loss:', loss.item())
                 print('accuracy:', accuracy)
-                print('prediction 1:', cpu(prediction1[:5]))
-                print('label 1:', cpu(label1[:5]))
-                print('prediction 2:', cpu(prediction2[:5]))
-                print('label 2:', cpu(label2[:5]))
+                print('prediction 1:', prediction1[:5])
+                print('label 1:', label1[:5])
+                print('prediction 2:', prediction2[:5])
+                print('label 2:', label2[:5])
                 print()
 
 
