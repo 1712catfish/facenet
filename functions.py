@@ -1,3 +1,4 @@
+import random
 from functools import reduce
 
 import torch
@@ -22,3 +23,7 @@ cudaTensorLift = lift(lambda x: torch.autograd.Variable(x).cuda())
 tensor = lambda x: torch.autograd.Variable(x).cuda()
 
 cpu = lambda x: x.cpu().detach().numpy()
+
+
+def toss(probability):
+    return random.random() < probability
