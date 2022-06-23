@@ -1,43 +1,66 @@
-# import config
-# from functions import *
-#
-# def train(train_loader, val_loader, criterion, optimizer):
-#
-#     train_iter = iter(train_loader)
-#     val_iter = iter(val_loader)
-#
-#     counter = []
-#     loss_history = []
-#     accuracy = []
-#     iteration_number = 0
-#
-#     for epoch in range(config.EPOCHS):
-#
-#         x1, y2 = next(train_iter)
-#         x1, y1 = tensor(x1), tensor(y1)
-#         y_hat1 = model(x1)
-#
-#         x1, y2 = next(train_iter)
-#         x1, y1 = tensor(x1), tensor(y1)
-#         y_hat1 = model(x1)
-#
-#
-#
-#
-#             optimizer.zero_grad()
-#             loss.backward()
-#             optimizer.step()
-#
-#             if i % config.LOG_EVERY == 0:
-#                 lambda x: torch.argmax(x, dim=1)
-#
-#                 pred1, true1 = f(*next(val_iter))
-#                 pred2, true2 = f(*next(val_iter))
-#
-#                 acc = sum(torch.logical_not(torch.logical_xor(pred1 == pred2, y1 == y2))) / float(y1.size(0))
-#
-#                 iteration_number += 10
-#                 counter.append(iteration_number)
-#                 loss_history.append(loss.item())
-#                 accuracy.append(acc.item())
-#                 print(f'Epoch: {epoch} | train loss: {loss.item():.4f} | test accuracy: {acc.item():.2f}')
+import torch
+from torch import nn
+
+from sklearn.metrics import accuracy_score
+
+from loader import build_loader
+from loss import CleanContrastiveLoss
+from model import Model, ArcMarginModel
+from functions import tensor
+
+
+def train():
+    net = Model().cuda()
+
+    # metric_fc = ArcMarginModel()
+    # metric_fc = nn.DataParallel(metric_fc)
+    # metric_fc = metric_fc.cuda()
+
+    optimizer = torch.optim.Adam(net.parameters(), lr=config.LR)
+    criterion = CleanContrastiveLoss().cuda()
+
+    train_loader, val_loader = build_loader()
+
+    history = dict(
+        loss=[],
+        accuracy=[]
+    )
+
+    for epoch in range(config.EPOCHS):
+
+        train_iter = iter(train_loader)
+        val_iter = iter(val_loader)
+
+        for i in range(config.ITERATION_PER_EPOCH):
+
+            input1, label1, train_iter = next_(train_iter, train_loader)
+            input2, label2, train_iter = next_(train_iter, train_loader)
+
+            loss = criterion(net(input1), net(input2), label1, label2)
+
+            optimizer.zero_grad()
+
+            loss.backward()
+
+            optimizer.step()
+
+            if i % 200 == 0:
+                input1, label1, train_iter = next_(val_iter, val_loader)
+                input2, label2, train_iter = next_(val_iter, val_loader)
+
+                prediction1 = torch.argmax(net(input1), dim=1)
+                prediction2 = torch.argmax(net(input2), dim=1)
+
+                accuracy = accuracy_score(
+                    (net(input1) == net(input2).data),
+                    (label1 == label2).data
+                )
+
+                history['loss'].append(loss.item())
+                history['accuracy'].append(accuracy.item())
+
+                print(f'Epoch: {epoch} | train loss: {loss.item():.4f} | test accuracy: {accuracy.item():.2f}')
+
+
+if __name__ == '__main__':
+    train()
