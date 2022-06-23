@@ -14,7 +14,7 @@ def plot_history(history):
     plt.legend(['train', 'test'], loc='upper left')
     plt.show()
     # summarize history for loss
-    plt.plot(history.history['loss'])
+    plt.plot(history['loss'])
     plt.title('model loss')
     plt.ylabel('loss')
     plt.xlabel('epoch')
