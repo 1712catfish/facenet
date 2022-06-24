@@ -34,6 +34,32 @@ class Model(nn.Module):
         return x
 
 
+class Model2(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.backbone = models.efficientnet_b3(pretrained=True, dropout=0.2)
+        self.head = nn.Sequential(
+            nn.Linear(self.backbone.classifier[1].out_features, 512),
+            nn.ReLU(inplace=False),
+            nn.BatchNorm1d(512),
+
+            nn.Linear(512, 256),
+            nn.ReLU(inplace=False),
+            nn.BatchNorm1d(256),
+
+            nn.Linear(256, 128),
+            nn.ReLU(inplace=False),
+            nn.BatchNorm1d(128),
+
+            nn.Hardsigmoid(inplace=False)
+        )
+
+    def forward(self, inp):
+        x = self.backbone(inp)
+        x = self.head(x)
+        return x
+
+
 class ArcMarginModel(nn.Module):
     def __init__(self):
         super().__init__()

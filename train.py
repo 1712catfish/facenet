@@ -7,14 +7,13 @@ import config
 from functions import cpu
 from loader import build_loader, take
 from loss import CleanContrastiveLoss
-from model import Model
 from plot import plot_history
 from preprocessing import build_transform
 
 
 def train():
     print('building net...')
-    net = Model().to(config.DEVICE)
+    net = Model2().to(config.DEVICE)
 
     # metric_fc = ArcMarginModel()
     # metric_fc = nn.DataParallel(metric_fc)
