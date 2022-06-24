@@ -6,26 +6,26 @@ from tqdm import tqdm
 import config
 from functions import cpu
 from loader import build_loader, take
+from loss import CleanContrastiveLoss
+from model import Model
 from plot import plot_history
 from preprocessing import build_transform
 
 
 def train():
-    # print('building net...')
-    # net = Model().to(config.DEVICE)
-    #
-    # # metric_fc = ArcMarginModel()
-    # # metric_fc = nn.DataParallel(metric_fc)
-    # # metric_fc = metric_fc.cuda()
-    #
-    # optimizer = torch.optim.Adam(net.parameters(), lr=config.LR)
-    # criterion = CleanContrastiveLoss().to(config.DEVICE)
+    print('building net...')
+    net = Model().to(config.DEVICE)
+
+    # metric_fc = ArcMarginModel()
+    # metric_fc = nn.DataParallel(metric_fc)
+    # metric_fc = metric_fc.cuda()
+
+    optimizer = torch.optim.Adam(net.parameters(), lr=config.LR)
+    criterion = CleanContrastiveLoss().to(config.DEVICE)
 
     print('building loaders...')
     transform = build_transform()
     train_loader, val_loader = build_loader(transform)
-
-    print(len(train_loader))
 
     history = dict(
         loss=[],
@@ -44,7 +44,7 @@ def train():
         train_iter = iter(train_loader)
         val_iter = iter(val_loader)
 
-        for i in tqdm(range(config.STEPS_PER_EPOCH)):
+        for i in tqdm(range(len(train_loader) // config.BATCH_SIZE)):
 
             input1, label1, input2, label2 = take(train_iter)
 
