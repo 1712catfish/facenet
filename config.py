@@ -2,8 +2,8 @@ import os
 
 import torch
 
-TRAIN_DIR = '/content/train_lfw/merge'
-VAL_DIR = '/content/train_lfw/merge'
+TRAIN_DIR = 'train_lfw/merge'
+VAL_DIR = 'train_lfw/merge'
 
 IMSIZE = 224
 EMB_SIZE = 2048
