@@ -1,3 +1,4 @@
+import numpy as np
 import torch
 from sklearn.metrics import accuracy_score
 
@@ -39,7 +40,11 @@ def train():
 
         print('epoch', epoch)
 
+        epoch_loss = []
+        epoch_accuracy = []
+
         for i in range(config.STEPS_PER_EPOCH):
+
             input1, label1, input2, label2 = take(train_iter)
 
             output1 = net(input1)
@@ -64,16 +69,19 @@ def train():
                     cpu(torch.eq(label1, label2))
                 )
 
-                history['loss'].append(loss.item())
-                history['accuracy'].append(accuracy)
+                epoch_loss.append(loss.item())
+                epoch_accuracy.append(accuracy)
 
-                print('step:', '{:3d}'.format(i), end='  ')
-                print('loss:', '%.6f' % (loss.item()), end='  ')
-                print('accuracy:', '%.6f' % accuracy)
-                # print('prediction 1:', prediction1[:5])
-                # print('label 1:', label1[:5])
-                # print('prediction 2:', prediction2[:5])
-                # print('label 2:', label2[:5])
+        history['loss'].append(np.mean(epoch_loss))
+        history['accuracy'].append(np.mean(epoch_accuracy))
+
+        print('epoch:', '{:3d}'.format(epoch), end='  ')
+        print('loss:', '%.6f' % history['loss'][-1], end='  ')
+        print('accuracy:', '%.6f' % history['accuracy'][-1])
+        # print('prediction 1:', prediction1[:5])
+        # print('label 1:', label1[:5])
+        # print('prediction 2:', prediction2[:5])
+        # print('label 2:', label2[:5])
 
     plot_history(history)
 
