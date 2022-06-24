@@ -1,6 +1,7 @@
 import numpy as np
 import torch
 from sklearn.metrics import accuracy_score
+from tqdm import tqdm
 
 import config
 from functions import cpu
@@ -43,7 +44,7 @@ def train():
         epoch_loss = []
         epoch_accuracy = []
 
-        for i in range(config.STEPS_PER_EPOCH):
+        for i in tqdm(range(config.STEPS_PER_EPOCH)):
 
             input1, label1, input2, label2 = take(train_iter)
 
@@ -75,7 +76,7 @@ def train():
         history['loss'].append(np.mean(epoch_loss))
         history['accuracy'].append(np.mean(epoch_accuracy))
 
-        print('epoch:', '{:3d}'.format(epoch), end='  ')
+        # print('epoch:', '{:3d}'.format(epoch), end='  ')
         print('loss:', '%.6f' % history['loss'][-1], end='  ')
         print('accuracy:', '%.6f' % history['accuracy'][-1])
         # print('prediction 1:', prediction1[:5])
