@@ -7,6 +7,7 @@ import config
 from functions import cpu
 from loader import build_loader, take
 from loss import CleanContrastiveLoss
+from model import Model2
 from plot import plot_history
 from preprocessing import build_transform
 
