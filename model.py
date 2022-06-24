@@ -37,7 +37,7 @@ class Model(nn.Module):
 class Model2(nn.Module):
     def __init__(self):
         super().__init__()
-        self.backbone = models.efficientnet_b3(pretrained=True, dropout=0.2)
+        self.backbone = models.efficientnet_b3(pretrained=True)
         self.head = nn.Sequential(
             nn.Linear(self.backbone.classifier[1].out_features, 512),
             nn.ReLU(inplace=False),
