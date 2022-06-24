@@ -8,7 +8,7 @@ VAL_DIR = '/content/train_lfw/merge'
 IMSIZE = 224
 EMB_SIZE = 2048
 
-EPOCHS = 1
+EPOCHS = 20
 STEPS_PER_EPOCH = 1000
 LOG_EVERY = 200
 BATCH_SIZE = 32
