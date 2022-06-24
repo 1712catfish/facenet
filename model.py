@@ -39,7 +39,7 @@ class Model2(nn.Module):
         super().__init__()
         self.backbone = models.efficientnet_b3(pretrained=False)
         self.head = nn.Sequential(
-            nn.Linear(self.backbone.classifier[1].out_features, 512),
+            nn.Linear(self.backbone.classifier[1].out_features, 256),
             nn.ReLU(inplace=False),
             nn.BatchNorm1d(512),
 
