@@ -41,7 +41,7 @@ class Model2(nn.Module):
         self.head = nn.Sequential(
             nn.Linear(self.backbone.classifier[1].out_features, 256),
             nn.ReLU(inplace=False),
-            nn.BatchNorm1d(512),
+            nn.BatchNorm1d(256),
 
             # nn.Linear(512, 256),
             # nn.ReLU(inplace=False),
